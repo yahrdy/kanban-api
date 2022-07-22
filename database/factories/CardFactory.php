@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Column;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class CardFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'column_id' => Column::inRandomOrder()->first()->id,
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->text
         ];
     }
 }

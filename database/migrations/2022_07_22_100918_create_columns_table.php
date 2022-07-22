@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('columns', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->integer('order')->default(999999);
             $table->timestamps();
         });
     }

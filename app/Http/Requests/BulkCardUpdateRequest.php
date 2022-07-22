@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCardRequest extends FormRequest
+class BulkCardUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,12 @@ class UpdateCardRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'string',
-            'description' => 'string|nullable'
+            'cards' => 'array',
+            'cards.*.id' => 'integer|required',
+            'cards.*.title' => 'string',
+            'cards.*.description' => 'string|nullable',
+            'cards.*.column_id' => 'integer|exists:columns,id',
+            'cards.*.order' => 'integer'
         ];
     }
 }

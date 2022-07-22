@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreColumnRequest;
 use App\Http\Requests\UpdateColumnRequest;
 use App\Models\Column;
+use Illuminate\Database\Eloquent\Collection;
 
 class ColumnController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Collection|array
     {
-        //
+        return Column::with('cards')->get();
     }
 
     /**
@@ -31,18 +31,19 @@ class ColumnController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreColumnRequest  $request
+     * @param \App\Http\Requests\StoreColumnRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreColumnRequest $request)
     {
-        //
+        $column = Column::create($request->validated());
+        return response($column);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Column  $column
+     * @param \App\Models\Column $column
      * @return \Illuminate\Http\Response
      */
     public function show(Column $column)
@@ -53,7 +54,7 @@ class ColumnController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Column  $column
+     * @param \App\Models\Column $column
      * @return \Illuminate\Http\Response
      */
     public function edit(Column $column)
@@ -64,8 +65,8 @@ class ColumnController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateColumnRequest  $request
-     * @param  \App\Models\Column  $column
+     * @param \App\Http\Requests\UpdateColumnRequest $request
+     * @param \App\Models\Column $column
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateColumnRequest $request, Column $column)
@@ -76,11 +77,12 @@ class ColumnController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Column  $column
+     * @param \App\Models\Column $column
      * @return \Illuminate\Http\Response
      */
     public function destroy(Column $column)
     {
-        //
+        $column->delete();
+        return response()->noContent();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\ColumnController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::apiResource('columns', ColumnController::class);
+Route::apiResource('cards', CardController::class);
+Route::post('cards/update/bulk', [CardController::class, 'bulkUpdate']);
+Route::get('list-cards',[CardController::class,'index']);
+Route::get('export', function () {
+    \Spatie\DbDumper\Databases\MySql::create()
+        ->setDbName(env('DB_DATABASE'))
+        ->setUserName(env('DB_USERNAME'))
+        ->setPassword(env('DB_PASSWORD'))
+        ->dumpToFile('backup.sql');
+
+    $path = public_path('backup.sql');
+    return response()->download($path);
 });

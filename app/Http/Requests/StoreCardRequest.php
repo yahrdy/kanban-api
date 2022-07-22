@@ -13,7 +13,7 @@ class StoreCardRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreCardRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'column_id' => 'integer|required|exists:columns,id',
+            'title' => 'string|required',
+            'description' => 'string|nullable'
         ];
     }
 }
