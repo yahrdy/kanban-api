@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BulkCardUpdateRequest;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
+use App\Models\AccessToken;
 use App\Models\Card;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
@@ -19,15 +20,15 @@ class CardController extends Controller
     public function index(): Response
     {
         $userAccessToken = request('access_token');
-        $accessToken = '42gA1S5';
+        $accessToken = AccessToken::first()->token ?? null;
         if ($userAccessToken != $accessToken) {
-            return \response('Unauthenticated',401);
+            return \response('Unauthenticated', 401);
         }
         $cards = Card::query();
         if (request()->filled('date')) {
             $date = request('date');
-            $date = Carbon::createFromFormat('Y-m-d',$date);
-            $cards->whereDate('created_at',$date);
+            $date = Carbon::createFromFormat('Y-m-d', $date);
+            $cards->whereDate('created_at', $date);
         }
         return response($cards->get());
     }

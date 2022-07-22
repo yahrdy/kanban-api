@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ColumnController;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('columns', ColumnController::class);
 Route::apiResource('cards', CardController::class);
+Route::get('tokens',[AccessTokenController::class,'index']);
 Route::post('cards/update/bulk', [CardController::class, 'bulkUpdate']);
 Route::get('list-cards',[CardController::class,'index']);
 Route::get('export', function () {
